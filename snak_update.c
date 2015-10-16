@@ -27,6 +27,19 @@ void drawPlayfield(state playfield[PF_SIZE][PF_SIZE]){
         printf("\n");
     }
 }
-void initSnake(Point body[MAX_LEN]){
+void initSnake(Snake s){    
+    s.size = 0;
+    s.boazen = 0;
+    //initHead
+    s.body[0].x = (int)PF_SIZE/2;
+    s.body[0].y = (int)PF_SIZE/2;
+    s.body[0].dir = EAST;
+    //init body
+    int i;
+    for(i = 1; i < MAX_LEN; i++){
+        s.body[i].x = -1;
+        s.body[i].y = -1;
+        s.body[i].dir = INIT;
+    }
     
 }
