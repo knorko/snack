@@ -45,7 +45,7 @@ void updatePlayfield(){
                 willi.boazen += 1;
                 playfield[y][x] = SNAKE;
             }else if(playfield[y][x] == POINT){}
-            playfield[y][x] = EMPTY;
+            else playfield[y][x] = EMPTY;
         }
     }
     playfield[willi.x][willi.y] = SNAKE;
