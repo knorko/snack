@@ -114,14 +114,14 @@ int main(){
 				willi.dir = 2;
 			}
 			 
+        } else {
+			//Walk
+	        if(willi.dir == 6)   willi.x += 1;
+	        if(willi.dir == 2)   willi.y += 1;
+	        if(willi.dir == 4)   willi.x -= 1;
+	        if(willi.dir == 8)   willi.y -= 1;	
         }
 		
-		
-		//Walk anyway
-        if(willi.dir == 6)   willi.x += 1;
-        if(willi.dir == 2)   willi.y += 1;
-        if(willi.dir == 4)   willi.x -= 1;
-        if(willi.dir == 8)   willi.y -= 1;
 
         updatePlayfield();
         drawPlayfield();
