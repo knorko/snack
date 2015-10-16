@@ -9,6 +9,7 @@
 #define BLANK "   "
 
 int spwanTimer = 0;
+int gameover = 0;
 
 int playfield[PF_SIZE][PF_SIZE];
 
@@ -61,16 +62,17 @@ void updatePlayfield() {
         int y = rand() % PF_SIZE;
         playfield[x][y] = POINT;
     }
+	
+	spwanTimer++;
 }
 
 void drawPlayfield() {
-    system("clear");
 	int x, y;
 
     for(x = 0; x < PF_SIZE; x++) {
         for(y = 0; y < PF_SIZE; y++) {
             if(playfield[y][x] == EMPTY) {
-                printf(" %s", BLANK);
+                printf("o%s", BLANK);
             } else if(playfield[y][x] == SNAKE) {
                 printf("-%s", BLANK);
             } else if(playfield[y][x] == POINT) {
@@ -92,43 +94,62 @@ int main(){
     willi.boazen = 0;
 
     resetPlayfield();
-    updatePlayfield();
-    drawPlayfield();
 
     int c;
 
-    while((c = getchar()) != 'q') {
-        if(c == 'a') {
-            
-			if(willi.dir == 6 || willi.dir == 4) {
-                willi.dir = 8;
-            } else {
-				willi.dir = 4;
-			}
-			
-        } else if(c == 'x') {
-            
-			if(willi.dir == 8 || willi.dir == 2) {
-				willi.dir = 6;
-            } else {
-				willi.dir = 2;
-			}
-			 
-        } else {
-			//Walk
-	        if(willi.dir == 6)   willi.x += 1;
-	        if(willi.dir == 2)   willi.y += 1;
-	        if(willi.dir == 4)   willi.x -= 1;
-	        if(willi.dir == 8)   willi.y -= 1;	
-        }
+    do {
 		
+		if(!gameover) {
+			
+	        if(c == 'a') {
+            
+				if(willi.dir == 6 || willi.dir == 4) {
+	                willi.dir = 8;
+	            } else {
+					willi.dir = 4;
+				}
+			
+	        } else if(c == 'x') {
+            
+				if(willi.dir == 8 || willi.dir == 2) {
+					willi.dir = 6;
+	            } else {
+					willi.dir = 2;
+				}
+			 
+	        } else {
+				//Walk
+		        if(willi.dir == 6)   willi.x += 1;
+		        if(willi.dir == 2)   willi.y += 1;
+		        if(willi.dir == 4)   willi.x -= 1;
+		        if(willi.dir == 8)   willi.y -= 1;
+				
+				//check if out of border
+				if(willi.x < 0)
+					willi.x = 0;
+				else if(willi.x >= PF_SIZE)
+					willi.x = PF_SIZE - 1;
+				
+				if(willi.y < 0)
+					willi.y = 0;
+				else if(willi.y >= PF_SIZE)
+					willi.y = PF_SIZE - 1;
+				
+	        }
+			
+			
+			updatePlayfield();
+		}
+			
+			//not portable on non-unix systems, biatch!
+			system("clear");
+			
+			printf("Boazen:\t%d\n", willi.boazen);
+	        drawPlayfield();
+			printf("(a:up/left, x:down/right, q:quit) > ");
 
-        updatePlayfield();
-        drawPlayfield();
-        spwanTimer++;
-        printf("Boazen:\t%d\n", willi.boazen);
-    }
-
+	} while((c = getchar()) != 'q');
+	
 	return 0;
 }
 
