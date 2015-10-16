@@ -27,3 +27,6 @@ void drawPlayfield(state playfield[PF_SIZE][PF_SIZE]){
         printf("\n");
     }
 }
+void initSnake(Point body[MAX_LEN]){
+    
+}

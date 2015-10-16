@@ -21,10 +21,10 @@ typedef struct{
     int boazen;
 }Snake;
 
-void initPlayfield();
-void initSnake();
+void initPlayfield(state[PF_SIZE][PF_SIZE]);
+void initSnake(Point[MAX_LEN]);
 Point generateSnack();
-void updatePlayfield(Snake, Point[]);
+void updatePlayfield(Snake, Point[MAX_LEN], state[PF_SIZE][PF_SIZE]);
 void updateSnake();
 void drawPlayfield(state[PF_SIZE][PF_SIZE]);
 
