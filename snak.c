@@ -37,17 +37,22 @@ void resetPlayfield() {
     }
 }
 
-void updatePlayfield(){
+void updatePlayfield() {
     int x,y;
-    for(x = 0; x < PF_SIZE; x++){
-        for(y = 0; y < PF_SIZE; y++){
-            if(playfield[y][x] == POINT && willi.x == y && willi.y == x){
+	
+    for(x = 0; x < PF_SIZE; x++) {
+        for(y = 0; y < PF_SIZE; y++) {
+            if(playfield[y][x] == POINT && willi.x == y && willi.y == x) {
                 willi.boazen += 1;
                 playfield[y][x] = SNAKE;
-            }else if(playfield[y][x] == POINT){}
-            else playfield[y][x] = EMPTY;
+            } else if(playfield[y][x] == POINT) {
+            	//Do nothing
+            } else {
+				playfield[y][x] = EMPTY;	
+            }
         }
     }
+	
     playfield[willi.x][willi.y] = SNAKE;
 
     if(spwanTimer == 5) {
@@ -62,9 +67,9 @@ void drawPlayfield() {
     system("clear");
 	int x, y;
 
-    for(x = 0; x < PF_SIZE; x++){
-        for(y = 0; y < PF_SIZE; y++){
-            if(playfield[y][x] == EMPTY){
+    for(x = 0; x < PF_SIZE; x++) {
+        for(y = 0; y < PF_SIZE; y++) {
+            if(playfield[y][x] == EMPTY) {
                 printf(" %s", BLANK);
             } else if(playfield[y][x] == SNAKE) {
                 printf("-%s", BLANK);
@@ -93,21 +98,30 @@ int main(){
     int c;
 
     while((c = getchar()) != 'q') {
-        if(c == 'a'){
-            if(willi.dir == 6 || willi.dir == 4){
+        if(c == 'a') {
+            
+			if(willi.dir == 6 || willi.dir == 4) {
                 willi.dir = 8;
-            }
-            else willi.dir = 4;
+            } else {
+				willi.dir = 4;
+			}
+			
+        } else if(c == 'x') {
+            
+			if(willi.dir == 8 || willi.dir == 2) {
+				willi.dir = 6;
+            } else {
+				willi.dir = 2;
+			}
+			 
         }
-        else if(c == 'x'){
-            if(willi.dir == 8 || willi.dir == 2)    willi.dir = 6;
-            else willi.dir = 2; 
-        } else {
-           if(willi.dir == 6)   willi.x += 1;
-           if(willi.dir == 2)   willi.y += 1;
-           if(willi.dir == 4)   willi.x -= 1;
-           if(willi.dir == 8)   willi.y -= 1;
-        }
+		
+		
+		//Walk anyway
+        if(willi.dir == 6)   willi.x += 1;
+        if(willi.dir == 2)   willi.y += 1;
+        if(willi.dir == 4)   willi.x -= 1;
+        if(willi.dir == 8)   willi.y -= 1;
 
         updatePlayfield();
         drawPlayfield();
