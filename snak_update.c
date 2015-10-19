@@ -28,22 +28,24 @@ void drawPlayfield(state playfield[PF_SIZE][PF_SIZE]){
         printf("\n");
     }
 }
-void initSnake(Snake s){    
-    s.size = 0;
-    s.boazen = 0;
+
+void initSnake(Snake *s){    
+    s->size = 0;
+    s->boazen = 0;
     //initHead
-    s.body[0].x = (int)PF_SIZE/2;
-    s.body[0].y = (int)PF_SIZE/2;
-    s.body[0].dir = EAST;
+    s->body[0].x = (int)PF_SIZE/2;
+    s->body[0].y = (int)PF_SIZE/2;
+    s->body[0].dir = EAST;
     //init body
     int i;
     for(i = 1; i < MAX_LEN; i++){
-        s.body[i].x = -1;
-        s.body[i].y = -1;
-        s.body[i].dir = INIT;
+        s->body[i].x = -1;
+        s->body[i].y = -1;
+        s->body[i].dir = INIT;
     }
     
 }
+
 void initSnacks(Point snacks[MAX_LEN]){
     srand(time(NULL));
     Point p;
@@ -54,16 +56,17 @@ void initSnacks(Point snacks[MAX_LEN]){
         snacks[i] = p;
     }
 }
+
 void updatePlayfield(Snake snake, Point snacks[MAX_LEN], state pf[PF_SIZE][PF_SIZE]){
     int i;
     //Insert Snake Data into Playfield
-    for(i = 0; i < snake.size; i++){
+    for(i = 0; i <= snake.size; i++){
         pf[snake.body[i].x][snake.body[i].y] = SNAKE;
+        //DEBUG: outcomment for release
+        printf("DEBUG:\nSnake current Size: %d\nAdded element %d of Snake: P(%d, %d)\n", 
+        snake.size, i, snake.body[i].x, snake.body[i].y); 
     }
     i = 0;
     //Insert Snack data
-    while(snacks[i].x != -1){
-        pf[snacks[i].x][snacks[i].y] = SNACK;
-        i++;
-    }
+    
 }

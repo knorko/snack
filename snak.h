@@ -22,7 +22,7 @@ typedef struct{
 }Snake;
 
 void initPlayfield(state[PF_SIZE][PF_SIZE]);
-void initSnake(Snake s);
+void initSnake(Snake *s);
 void initSnacks(Point[MAX_LEN]);
 Point generateSnack();
 void updatePlayfield(Snake, Point[MAX_LEN], state[PF_SIZE][PF_SIZE]);
