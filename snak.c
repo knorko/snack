@@ -1,5 +1,6 @@
 #include "snak.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(){
     state playfield[PF_SIZE][PF_SIZE];
@@ -10,15 +11,10 @@ int main(){
     initSnake(&willi);
     initSnacks(snac_ptr);
 
-	char input = 'x';
-	int count = 3;
+	char input = 'p';
 	while(input != 'q'){
-		if(count == 0){
-			willi.size += 1;
-			count = 3;
-		}
+		//system("clear");
 	    initPlayfield(playfield);
-		printf("Main: Willi headed: %d\n", willi.body[0].dir);
 		if(input == 'a' && (willi.body[0].dir == WEST || willi.body[0].dir == EAST)) 		
 			updateSnake(&willi, NORTH); 
 		else if(input == 'a' && (willi.body[0].dir == NORTH || 
@@ -30,10 +26,10 @@ int main(){
 		else if(input == 'x' && (willi.body[0].dir == SOUTH || 
 			willi.body[0].dir == NORTH)) 
 			updateSnake(&willi, EAST);
-		else {updateSnake(&willi, willi.body[0].dir); printf("INPUT = NULL\n");}
-		updatePlayfield(willi, snacks, playfield);
+		else updateSnake(&willi, willi.body[0].dir);
+		updatePlayfield(&willi, snac_ptr, playfield);
 	    drawPlayfield(playfield);
+		printf("Play: 'a' -> Up/Left 'x' -> Right/Down 'q' -> quit: ");
 		input = getchar();
-		count --;
 	}
 }

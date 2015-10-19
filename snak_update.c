@@ -47,29 +47,51 @@ void initSnake(Snake *s){
 
 void initSnacks(Point snacks[MAX_LEN]){
     srand(time(NULL));
-    for(int i = 0; i < MAX_LEN; i++){
+	snacks[0].x = -1;
+	snacks[0].y = -1;
+    for(int i = 1; i < MAX_LEN; i++){
         snacks[i].x = rand() % PF_SIZE;
         snacks[i].y = rand() % PF_SIZE;
 		snacks[i].dir = INIT;
     }
 }
 
-void updatePlayfield(Snake snake, Point snacks[MAX_LEN], state pf[PF_SIZE][PF_SIZE]){
-    if(	snake.body[0].x >= PF_SIZE || 
-		snake.body[0].y >= PF_SIZE || 
-		snake.body[0].x < 0 || 
-		snake.body[0].y < 0){printf("GAME OVER\n"); return;}
-	int i;
-    //Insert Snake Data into Playfield
-    for(i = 0; i <= snake.size; i++){
-        pf[snake.body[i].x][snake.body[i].y] = SNAKE;
-        //DEBUG: outcomment for release
-         
-    }
-    i = 0;
+void updatePlayfield(Snake *snake, Point snacks[MAX_LEN], state pf[PF_SIZE][PF_SIZE]){
+    if(	snake->body[0].x >= PF_SIZE || 
+		snake->body[0].y >= PF_SIZE || 
+		snake->body[0].x < 0 || 
+		snake->body[0].y < 0){printf("GAME OVER\n"); return;}
+
     //Insert Snack data
-    pf[snacks[0].x][snacks[0].y] = SNACK;
+	int j = 0;
+	Point next_snack;
+	while(snacks[j].x == -1){
+		next_snack = snacks[j+1];
+		j++;
+	}
+	printf("updatePlayfield: next snack at: P(%d %d)\n", next_snack.x, next_snack.y);
+	pf[next_snack.x][next_snack.y] = SNACK;
+
+	//Insert Snake Data
+	int i = 0;
+
+    for(i = 0; i <= snake->size; i++){
+        pf[snake->body[i].x][snake->body[i].y] = SNAKE; 
+    }
+	//Check if Snake is on Snack
+	if(snake->body[0].x == snacks[j].x && snake->body[0].y == snacks[j].y){
+		printf("updatePlayfield: Snake hit Snack\n");
+		//grow snake
+		snake->size += 1;
+		//Add point
+		snake->boazen += 1;
+		//set current Snacks x coor to minus zero 
+		snacks[j].x = -1;
+	}
+
 }
+
+
 void updateSnake(Snake *s, direction dir){
 	//Update Head Direction
 	s->body[0].dir = dir;
@@ -81,15 +103,18 @@ void updateSnake(Snake *s, direction dir){
 		case SOUTH: s->body[0].y += 1;break;
 		case WEST: 	s->body[0].x -= 1;break;
 	}
-	//Update Body Direction
+	//DEBUG:
+	printf("\nDEBUG:\nSnake size: %d\nSnake Direction: %d\nSnake[0]: P(%d %d)\n",s->size, 
+s->body[0].dir, s->body[0].x, s->body[0].y);
 
+	//Move Body
 	for(int i = s->size; i > 0; --i){
 	//DEBUG:
-
-	printf("DEBUG:\nSnake[%d]: X:%d Y:%d DIR:%d\n", i,s->body[i].x, s->body[i].y, 
+	printf("Snake[%d]: X:%d Y:%d DIR:%d\n", i,s->body[i].x, s->body[i].y, 
 			s->body[i].dir);
 
 		s->body[i].x = s->body[i-1].x;
 		s->body[i].y = s->body[i-1].y; 
+		s->body[i].dir = s->body[i-1].dir;
 	}
 }
