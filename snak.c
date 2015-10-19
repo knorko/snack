@@ -13,19 +13,19 @@ int main(){
 
 	char input = 'p';
 	while(input != 'q'){
-		//system("clear");
+		system("clear");
 	    initPlayfield(playfield);
-		if(input == 'a' && (willi.body[0].dir == WEST || willi.body[0].dir == EAST)) 		
-			updateSnake(&willi, NORTH); 
+		if(input == 'a' && (willi.body[0].dir == WEST || willi.body[0].dir == EAST)){ 		
+			updateSnake(&willi, NORTH); getchar();}
 		else if(input == 'a' && (willi.body[0].dir == NORTH || 
-			willi.body[0].dir == SOUTH)) 
-			updateSnake(&willi,WEST);
+			willi.body[0].dir == SOUTH)) {
+			updateSnake(&willi,WEST); getchar();}
 		else if(input == 'x' && (willi.body[0].dir == EAST || 
-			willi.body[0].dir == WEST))	
-			updateSnake(&willi, SOUTH);
+			willi.body[0].dir == WEST)){	
+			updateSnake(&willi, SOUTH); getchar();}
 		else if(input == 'x' && (willi.body[0].dir == SOUTH || 
-			willi.body[0].dir == NORTH)) 
-			updateSnake(&willi, EAST);
+			willi.body[0].dir == NORTH)) {
+			updateSnake(&willi, EAST); getchar();}
 		else updateSnake(&willi, willi.body[0].dir);
 		updatePlayfield(&willi, snac_ptr, playfield);
 	    drawPlayfield(playfield);
