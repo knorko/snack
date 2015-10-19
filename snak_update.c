@@ -29,13 +29,13 @@ void drawPlayfield(state playfield[PF_SIZE][PF_SIZE]){
     }
 }
 
-void initSnake(Snake *s){    
+void initSnake(Snake *s){
     s->size = 0;
     s->boazen = 0;
     //initHead
     s->body[0].x = 0;
     s->body[0].y = (int)PF_SIZE/2;
-    s->body[0].dir = WEST;
+    s->body[0].dir = EAST;
     //init body
     int i;
     for(i = 1; i < MAX_LEN; i++){
@@ -43,7 +43,6 @@ void initSnake(Snake *s){
         s->body[i].y = -1;
         s->body[i].dir = INIT;
     }
-    
 }
 
 void initSnacks(Point snacks[MAX_LEN]){
@@ -65,8 +64,7 @@ void updatePlayfield(Snake snake, Point snacks[MAX_LEN], state pf[PF_SIZE][PF_SI
     for(i = 0; i <= snake.size; i++){
         pf[snake.body[i].x][snake.body[i].y] = SNAKE;
         //DEBUG: outcomment for release
-        printf("DEBUG:\nSnake current Size: %d\nAdded element %d of Snake: P(%d, %d)\n", 
-        snake.size, i, snake.body[i].x, snake.body[i].y); 
+         
     }
     i = 0;
     //Insert Snack data
@@ -78,15 +76,14 @@ void updateSnake(Snake *s, direction dir){
 
 	//Move Head
 	switch(s->body[0].dir){
-		case NORTH:	s->body[0].y -= 1;printf("went NORTH\n");break;
-		case EAST: 	s->body[0].x += 1;printf("went EAST\n");break;
-		case SOUTH: s->body[0].y += 1;printf("went SOUTH\n");break;
-		case WEST: 	s->body[0].x -= 1;printf("went WEST\n");break;
-		default: printf("ERROR");
+		case NORTH:	s->body[0].y -= 1;break;
+		case EAST: 	s->body[0].x += 1;break;
+		case SOUTH: s->body[0].y += 1;break;
+		case WEST: 	s->body[0].x -= 1;break;
 	}
 	//Update Body Direction
 
-	for(int i = s->size; i > 0; i--){
+	for(int i = s->size; i > 0; --i){
 	//DEBUG:
 
 	printf("DEBUG:\nSnake[%d]: X:%d Y:%d DIR:%d\n", i,s->body[i].x, s->body[i].y, 
