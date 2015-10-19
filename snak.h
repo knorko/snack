@@ -23,9 +23,8 @@ typedef struct{
 
 void initPlayfield(state[PF_SIZE][PF_SIZE]);
 void initSnake(Snake *s);
-void initSnacks(Point[MAX_LEN]);
-Point generateSnack();
+void initSnacks(Point snacks[MAX_LEN]);
 void updatePlayfield(Snake, Point[MAX_LEN], state[PF_SIZE][PF_SIZE]);
-void updateSnake();
+void updateSnake(Snake *s, direction dir);
 void drawPlayfield(state[PF_SIZE][PF_SIZE]);
 

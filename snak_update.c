@@ -18,7 +18,7 @@ void drawPlayfield(state playfield[PF_SIZE][PF_SIZE]){
         for(x = 0; x <  PF_SIZE; x++){
             switch(playfield[x][y]){
                 case EMPTY:
-                    printf("O%s", BLANK);break;
+                    printf(" %s", BLANK);break;
                 case SNAKE:
                     printf("-%s", BLANK);break;
                 case SNACK:
@@ -35,7 +35,7 @@ void initSnake(Snake *s){
     //initHead
     s->body[0].x = (int)PF_SIZE/2;
     s->body[0].y = (int)PF_SIZE/2;
-    s->body[0].dir = EAST;
+    s->body[0].dir = SOUTH;
     //init body
     int i;
     for(i = 1; i < MAX_LEN; i++){
@@ -48,17 +48,19 @@ void initSnake(Snake *s){
 
 void initSnacks(Point snacks[MAX_LEN]){
     srand(time(NULL));
-    Point p;
-    p.dir = INIT;
     for(int i = 0; i < MAX_LEN; i++){
-        p.x = rand() % PF_SIZE;
-        p.y = rand() % PF_SIZE;
-        snacks[i] = p;
+        snacks[i].x = rand() % PF_SIZE;
+        snacks[i].y = rand() % PF_SIZE;
+		snacks[i].dir = INIT;
     }
 }
 
 void updatePlayfield(Snake snake, Point snacks[MAX_LEN], state pf[PF_SIZE][PF_SIZE]){
-    int i;
+    if(	snake.body[0].x >= PF_SIZE || 
+		snake.body[0].y >= PF_SIZE || 
+		snake.body[0].x < 0 || 
+		snake.body[0].y < 0){printf("GAME OVER\n"); return;}
+	int i;
     //Insert Snake Data into Playfield
     for(i = 0; i <= snake.size; i++){
         pf[snake.body[i].x][snake.body[i].y] = SNAKE;
@@ -68,5 +70,22 @@ void updatePlayfield(Snake snake, Point snacks[MAX_LEN], state pf[PF_SIZE][PF_SI
     }
     i = 0;
     //Insert Snack data
-    
+    pf[snacks[0].x][snacks[0].y] = SNACK;
+}
+void updateSnake(Snake *s, direction dir){
+	//Update Head Direction
+	s->body[0].dir = dir;
+	//Update Body Direction
+	for(int i = 1; i > 0; i--){
+		s->body[i].dir = s->body[i-1].dir; 
+	}
+	//Move Body Parts (including head)
+	for(int i = 0;i <= s->size; i++){
+		switch(s->body[i].dir){
+			case NORTH:	s->body[i].y -= 1;break;
+			case EAST: 	s->body[i].x += 1;break;
+			case SOUTH: s->body[i].y += 1;break;
+			case WEST: 	s->body[i].x -= 1;break;
+		}
+	}
 }
