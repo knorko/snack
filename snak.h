@@ -4,7 +4,7 @@
 
 
 
-enum State{EMPTY, SNAKE, POINT};
+enum State{EMPTY, SNAKE, SNACK};
 typedef enum State state;
 
 enum Direction{NORTH, EAST, SOUTH, WEST, INIT};
@@ -23,6 +23,7 @@ typedef struct{
 
 void initPlayfield(state[PF_SIZE][PF_SIZE]);
 void initSnake(Snake s);
+void initSnacks(Point[MAX_LEN]);
 Point generateSnack();
 void updatePlayfield(Snake, Point[MAX_LEN], state[PF_SIZE][PF_SIZE]);
 void updateSnake();

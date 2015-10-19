@@ -1,0 +1,164 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define PF_SIZE 16
+#define EMPTY 0
+#define SNAKE 1
+#define POINT 2
+#define BLANK "   "
+
+int spwanTimer = 0;
+int gameover = 0;
+
+int playfield[PF_SIZE][PF_SIZE];
+
+struct point{
+    int x,y;
+    int dir;
+};
+struct snake{
+    struct point body[PF_SIZE*PF_SIZE];
+    int size;
+    int boazen;
+};
+
+struct snake willi;
+
+void resetPlayfield() {
+    int x, y;
+
+    for(x=0;x<PF_SIZE;x++) {
+        for(y=0;y<PF_SIZE;y++) {
+            playfield[y][x] = EMPTY;
+        }
+    }
+    //reset Willi
+    for(int i = 1;i < PF_SIZE * PF_SIZE;i++){
+        willi.body[i].x = -1;
+        willi.body[i].y = -1;
+        willi.body[i].dir= 0;
+    }
+}
+
+void updatePlayfield() {
+    int x,y,i;
+	
+    for(y = 0; y < PF_SIZE; y++) {
+        for(x = 0; x < PF_SIZE; x++) {
+            for(i = 0; i =< willi.size; i++){ 
+                if(playfield[x][y] == POINT && willi.body[i].x == x && willi.body[i].y == y) 
+                {
+                    willi.size += 1;
+                    willi.body[size] 
+                    willi.boazen += 1;
+                    playfield[x][y] = SNAKE;
+                 } else if(playfield[y][x] == POINT) {
+                	//Do nothing
+                 } else {
+			    	playfield[y][x] = EMPTY;	
+                 }   
+            }
+        }
+    }
+	
+    playfield[willi.head.x][willi.head.y] = SNAKE;
+
+    if(spwanTimer == 5) {
+        spwanTimer = 0;
+        int x = rand() % PF_SIZE;
+        int y = rand() % PF_SIZE;
+        playfield[x][y] = POINT;
+    }
+	
+	spwanTimer++;
+}
+
+void drawPlayfield() {
+	int x, y;
+
+    for(x = 0; x < PF_SIZE; x++) {
+        for(y = 0; y < PF_SIZE; y++) {
+            if(playfield[y][x] == EMPTY) {
+                printf(" %s", BLANK);
+            } else if(playfield[y][x] == SNAKE) {
+                printf("-%s", BLANK);
+            } else if(playfield[y][x] == POINT) {
+                printf("X%s", BLANK);
+            }
+        }
+        printf("\n");
+    }
+}
+
+int main(){
+    srand(time(NULL));
+
+    //Init playfield
+
+    willi.head.x = 8;
+    willi.head.y = 8;
+    willi.head.dir = 6;
+    willi.size = 0;
+    willi.boazen = 0;
+
+    resetPlayfield();
+
+    int c;
+
+    do {
+		
+		if(!gameover) {
+			
+	        if(c == 'a') {
+            
+				if(willi.head.dir == 6 || willi.head.dir == 4) {
+	                willi.head.dir = 8;
+	            } else {
+					willi.head.dir = 4;
+				}
+			
+	        } else if(c == 'x') {
+            
+				if(willi.head.dir == 8 || willi.head.dir == 2) {
+					willi.head.dir = 6;
+	            } else {
+					willi.head.dir = 2;
+				}
+			 
+	        } else {
+				//Walk
+		        if(willi.head.dir == 6)   willi.head.x += 1;
+		        if(willi.head.dir == 2)   willi.head.y += 1;
+		        if(willi.head.dir == 4)   willi.head.x -= 1;
+		        if(willi.head.dir == 8)   willi.head.y -= 1;
+				
+				//check if out of border
+				if(willi.head.x < 0)
+					willi.head.x = 0;
+				else if(willi.head.x >= PF_SIZE)
+					willi.head.x = PF_SIZE - 1;
+				
+				if(willi.head.y < 0)
+					willi.head.y = 0;
+				else if(willi.head.y >= PF_SIZE)
+					willi.head.y = PF_SIZE - 1;
+				
+	        }
+			
+			
+			updatePlayfield();
+		}
+			
+			//not portable on non-unix systems, biatch!
+			system("clear");
+			
+			printf("Boazen:\t%d\n", willi.boazen);
+	        drawPlayfield();
+			printf("(a:up/left, x:down/right, q:quit) > ");
+
+	} while((c = getchar()) != 'q');
+	
+	return 0;
+}
+

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "snak.h"
 
 void initPlayfield(state playfield[PF_SIZE][PF_SIZE]){
@@ -20,7 +21,7 @@ void drawPlayfield(state playfield[PF_SIZE][PF_SIZE]){
                     printf("O%s", BLANK);break;
                 case SNAKE:
                     printf("-%s", BLANK);break;
-                case POINT:
+                case SNACK:
                     printf("X%s", BLANK);break;
             }
         }
@@ -42,4 +43,27 @@ void initSnake(Snake s){
         s.body[i].dir = INIT;
     }
     
+}
+void initSnacks(Point snacks[MAX_LEN]){
+    srand(time(NULL));
+    Point p;
+    p.dir = INIT;
+    for(int i = 0; i < MAX_LEN; i++){
+        p.x = rand() % PF_SIZE;
+        p.y = rand() % PF_SIZE;
+        snacks[i] = p;
+    }
+}
+void updatePlayfield(Snake snake, Point snacks[MAX_LEN], state pf[PF_SIZE][PF_SIZE]){
+    int i;
+    //Insert Snake Data into Playfield
+    for(i = 0; i < snake.size; i++){
+        pf[snake.body[i].x][snake.body[i].y] = SNAKE;
+    }
+    i = 0;
+    //Insert Snack data
+    while(snacks[i].x != -1){
+        pf[snacks[i].x][snacks[i].y] = SNACK;
+        i++;
+    }
 }
