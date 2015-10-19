@@ -11,11 +11,17 @@ int main(){
     initSnacks(snac_ptr);
 
 	char input = 'x';
+	int count = 3;
 	while(input != 'q'){
+		if(count == 0){
+			willi.size += 1;
+			count = 3;
+		}
 	    initPlayfield(playfield);
-		updateSnake(&willi, INIT);
+		updateSnake(&willi, EAST);
 		updatePlayfield(willi, snacks, playfield);
 	    drawPlayfield(playfield);
 		input = getchar();
+		count --;
 	}
 }

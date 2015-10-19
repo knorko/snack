@@ -33,9 +33,9 @@ void initSnake(Snake *s){
     s->size = 0;
     s->boazen = 0;
     //initHead
-    s->body[0].x = (int)PF_SIZE/2;
+    s->body[0].x = 0;
     s->body[0].y = (int)PF_SIZE/2;
-    s->body[0].dir = SOUTH;
+    s->body[0].dir = WEST;
     //init body
     int i;
     for(i = 1; i < MAX_LEN; i++){
@@ -75,17 +75,24 @@ void updatePlayfield(Snake snake, Point snacks[MAX_LEN], state pf[PF_SIZE][PF_SI
 void updateSnake(Snake *s, direction dir){
 	//Update Head Direction
 	s->body[0].dir = dir;
-	//Update Body Direction
-	for(int i = 1; i > 0; i--){
-		s->body[i].dir = s->body[i-1].dir; 
+
+	//Move Head
+	switch(s->body[0].dir){
+		case NORTH:	s->body[0].y -= 1;printf("went NORTH\n");break;
+		case EAST: 	s->body[0].x += 1;printf("went EAST\n");break;
+		case SOUTH: s->body[0].y += 1;printf("went SOUTH\n");break;
+		case WEST: 	s->body[0].x -= 1;printf("went WEST\n");break;
+		default: printf("ERROR");
 	}
-	//Move Body Parts (including head)
-	for(int i = 0;i <= s->size; i++){
-		switch(s->body[i].dir){
-			case NORTH:	s->body[i].y -= 1;break;
-			case EAST: 	s->body[i].x += 1;break;
-			case SOUTH: s->body[i].y += 1;break;
-			case WEST: 	s->body[i].x -= 1;break;
-		}
+	//Update Body Direction
+
+	for(int i = s->size; i > 0; i--){
+	//DEBUG:
+
+	printf("DEBUG:\nSnake[%d]: X:%d Y:%d DIR:%d\n", i,s->body[i].x, s->body[i].y, 
+			s->body[i].dir);
+
+		s->body[i].x = s->body[i-1].x;
+		s->body[i].y = s->body[i-1].y; 
 	}
 }
