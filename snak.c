@@ -8,6 +8,8 @@
 #define POINT 2
 #define BLANK "   "
 
+//FUCK YOU
+
 int spwanTimer = 0;
 int gameover = 0;
 
