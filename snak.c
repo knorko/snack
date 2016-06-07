@@ -9,6 +9,7 @@
 #define BLANK "   "
 
 //FUCK YOU
+//Fuck you selber
 
 int spwanTimer = 0;
 int gameover = 0;
